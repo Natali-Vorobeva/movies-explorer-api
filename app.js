@@ -4,7 +4,7 @@ const { errors } = require('celebrate');
 const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
-const routes = require('./routes');
+// const routes = require('./routes');
 
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
@@ -19,7 +19,7 @@ const limiter = rateLimit({
   max: 100,
 });
 
-mongoose.connect('mongodb://0.0.0.0:27017/mestodb');
+mongoose.connect('mongodb://0.0.0.0:27017/diplomdb');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -38,7 +38,7 @@ app.get('/crash-test', () => {
   }, 0);
 });
 
-app.use(routes);
+// app.use(routes);
 
 app.use(errorLogger);
 
