@@ -4,7 +4,7 @@ const { errors } = require('celebrate');
 const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
-// const routes = require('./routes');
+const routes = require('./routes');
 
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
@@ -32,13 +32,13 @@ app.use(requestLogger);
 app.use(helmet());
 app.use(errorLogger);
 
-app.get('/crash-test', () => {
-  setTimeout(() => {
-    throw new Error('Сервер сейчас упадёт');
-  }, 0);
-});
+// app.get('/crash-test', () => {
+//   setTimeout(() => {
+//     throw new Error('Сервер сейчас упадёт');
+//   }, 0);
+// });
 
-// app.use(routes);
+app.use(routes);
 
 app.use(errorLogger);
 

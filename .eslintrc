@@ -1,7 +1,11 @@
 {
-  "extends": "airbnb-base",
+	"extends": "airbnb-base",
   "rules": {
     "no-underscore-dangle": ["error",{"allow":["_id"]}],
     "consistent-return": 0
-  }
+  },
+	"parserOptions": {
+		// Required for certain syntax usages
+		"ecmaVersion": 2020
+	}
 }

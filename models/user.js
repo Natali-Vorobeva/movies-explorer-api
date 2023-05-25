@@ -4,8 +4,7 @@ const validator = require('validator');
 
 require('mongoose-type-url');
 
-// const { imgUrlRegExp } = require('../utils/regexp');
-// const UnauthorizedError = require('../utils/errors/unauthorized');
+const UnauthorizedError = require('../utils/errors/unauthorized');
 
 const userSchema = new mongoose.Schema({
   email: {

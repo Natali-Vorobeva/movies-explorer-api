@@ -1,10 +1,8 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
-const validator = require('validator');
 
 require('mongoose-type-url');
 
-const { imgUrlRegExp } = require('../utils/regexp');
+const { imgUrlRegExp } = require('../utils/imgUrlRegExp');
 
 const movieSchema = new mongoose.Schema({
   country: {
