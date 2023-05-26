@@ -30,7 +30,6 @@ const validateUserUpdate = celebrate({
   }),
 });
 
-// ! ПОСМОТРЕТЬ PARAMS (СКОЛЬКО СИМВОЛОВ)
 const validateMovieId = celebrate({
   params: Joi.object().keys({
     movieId: Joi.string().length(24),

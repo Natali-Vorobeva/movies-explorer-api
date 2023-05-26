@@ -49,10 +49,8 @@ async function createMovies(req, res, next) {
 }
 
 const deleteMovie = (req, res, next) => {
-  console.log(req.params);
-  // const owner = req.user._id;
   const { movieId } = req.params;
-  console.log(movieId);
+
   Movie.findById(movieId)
     .orFail(new NotFoundError('Фильм не найден.'))
     .then((movie) => {
