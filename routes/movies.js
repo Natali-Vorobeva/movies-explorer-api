@@ -5,6 +5,6 @@ const { validateMoviesPost, validateMovieId } = require('../middlewares/celebrat
 
 moviesRouter.get('/', getMovies);
 moviesRouter.post('/', validateMoviesPost, createMovies);
-moviesRouter.delete('/:movieId', validateMovieId, deleteMovie);
+moviesRouter.delete('/:filmId', validateMovieId, deleteMovie);
 
 module.exports = moviesRouter;

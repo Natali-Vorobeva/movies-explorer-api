@@ -6,11 +6,13 @@ const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const routes = require('./routes');
 
+require('dotenv').config();
+
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const BAD_REQUEST_ERROR_CODE = 400;
 
-const { PORT = 3000 } = process.env;
+const { PORT = 3005 } = process.env;
 
 const app = express();
 

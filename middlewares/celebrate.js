@@ -5,7 +5,7 @@ const validateUserCreate = celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
     password: Joi.string().required(),
-    name: Joi.string().min(2).max(30),
+    name: Joi.string().required(),
   }),
 });
 
@@ -13,13 +13,6 @@ const validateUserLogin = celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
     password: Joi.string().required(),
-  }),
-});
-
-const validateUserGet = celebrate({
-  body: Joi.object().keys({
-    email: Joi.string().required().email(),
-    name: Joi.string().required(),
   }),
 });
 
@@ -32,7 +25,7 @@ const validateUserUpdate = celebrate({
 
 const validateMovieId = celebrate({
   params: Joi.object().keys({
-    movieId: Joi.string().length(24),
+    filmId: Joi.string().hex().length(24).required(),
   }),
 });
 
@@ -46,7 +39,6 @@ const validateMoviesPost = celebrate({
     image: Joi.string().required().pattern(imgUrlRegExp),
     trailerLink: Joi.string().required().pattern(imgUrlRegExp),
     thumbnail: Joi.string().required().pattern(imgUrlRegExp),
-    owner: Joi.string().required(),
     movieId: Joi.number().required(),
     nameRU: Joi.string().required(),
     nameEN: Joi.string().required(),
@@ -56,8 +48,6 @@ const validateMoviesPost = celebrate({
 module.exports = {
   validateUserCreate,
   validateUserLogin,
-  validateUserGet,
-  // validateUserId,
   validateUserUpdate,
   validateMoviesPost,
   validateMovieId,
