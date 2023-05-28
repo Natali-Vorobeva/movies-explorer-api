@@ -3,63 +3,37 @@ const mongoose = require('mongoose');
 const { errors } = require('celebrate');
 const cors = require('cors');
 const helmet = require('helmet');
-const rateLimit = require('express-rate-limit');
 const routes = require('./routes');
+const centralHandlerErrors = require('./utils/errors/centralHandlerErrors');
+const allowedCors = require('./utils/constants');
+const limiter = require('./utils/rateLimiter');
 
 require('dotenv').config();
 
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
-const BAD_REQUEST_ERROR_CODE = 400;
-
-const { PORT = 3005 } = process.env;
+const { PORT, MONGO_DB_LINK } = process.env;
 
 const app = express();
 
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 100,
-});
-
-mongoose.connect('mongodb://0.0.0.0:27017/diplomdb');
-
+app.use(requestLogger);
+app.use(limiter);
+app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(limiter);
+app.use(cors({
+  origin: allowedCors,
+}));
 
-app.use(cors());
-
-app.use(requestLogger);
-app.use(helmet());
-app.use(errorLogger);
-
-// app.get('/crash-test', () => {
-//   setTimeout(() => {
-//     throw new Error('Сервер сейчас упадёт');
-//   }, 0);
-// });
+mongoose.connect(MONGO_DB_LINK);
 
 app.use(routes);
 
 app.use(errorLogger);
 
 app.use(errors());
-app.use((err, req, res, next) => {
-  if (err.name === 'ValidationError ') {
-    res.status(BAD_REQUEST_ERROR_CODE).send({ message: '400 — Переданы некорректные данные' });
-    return;
-  }
-  const { statusCode = 500, message } = err;
-  res
-    .status(statusCode)
-    .send({
-      message: statusCode === 500
-        ? 'На сервере произошла ошибка!!'
-        : message,
-    });
-  next();
-});
+app.use(centralHandlerErrors);
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);

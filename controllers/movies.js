@@ -5,7 +5,7 @@ const NotFoundError = require('../utils/errors/not-found');
 
 const getMovies = (req, res, next) => {
   Movie
-    .find({})
+    .find({ owner: req.user._id })
     .then((movies) => {
       res.status(200).send(movies);
     })
@@ -20,45 +20,15 @@ const createMovies = (req, res, next) => {
 
 const deleteMovie = (req, res, next) => {
   const owner = req.user._id;
-
-  Movie.findById(req.params.filmId)
+  const { movieId } = req.params;
+  Movie.findById(movieId)
     .orFail(new NotFoundError('Фильм не найден.'))
     .then((movie) => {
-      if (movie.owner.toString() !== owner) {
-        return new ForbiddenError('Отсутствие прав на удаление фильма.');
+      if (owner.toString() === movie.owner.toString()) {
+        return Movie.findByIdAndDelete(req.params.movieId)
+          .then(() => res.status(200).send({ message: 'Фильм удалён' }));
       }
-      return Movie.findByIdAndRemove(req.params.cardId);
-    })
-    .then(() => res.send({ message: 'Фильм удалён' }))
-    .catch((err) => next(err));
-};
-
-const likeMovie = (req, res, next) => {
-  Movie.findByIdAndUpdate(
-    req.params.movieId,
-    { $addToSet: { likes: req.user._id } },
-    { new: true, runValidators: true },
-  )
-    .orFail(new NotFoundError('Не найдено.'))
-    .then((movie) => {
-      res.status(200).send({ data: movie });
-    })
-    .catch((err) => {
-      next(err);
-    });
-};
-
-const deleteLike = (req, res, next) => {
-  Movie.findByIdAndUpdate(
-    req.params.movieId,
-    {
-      $pull: { likes: req.user._id },
-    },
-    { new: true, runValidators: true },
-  )
-    .orFail(new NotFoundError('Не найдено.'))
-    .then((movie) => {
-      res.status(200).send({ data: movie });
+      throw new ForbiddenError('Нельзя удалять чужой фильм');
     })
     .catch((err) => {
       next(err);
@@ -69,6 +39,4 @@ module.exports = {
   createMovies,
   getMovies,
   deleteMovie,
-  likeMovie,
-  deleteLike,
 };
