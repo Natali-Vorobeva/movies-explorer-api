@@ -30,6 +30,9 @@ const createUsers = (req, res, next) => {
           }
         })
         .catch(next);
+    })
+    .catch((err) => {
+      next(err);
     });
 };
 
@@ -82,21 +85,24 @@ const getUserInfo = (req, res, next) => {
 
 const updateUser = (req, res, next) => {
   const { email, name } = req.body;
-  User.findByIdAndUpdate(
-    req.user._id,
-    { email, name },
-    {
-      new: true,
-      runValidators: true,
-    },
-  )
-    .orFail(new NotFoundError('Не найдено.'))
+  return User.findOne({ email })
+    .then((user) => {
+      if (user && user._id.toString() !== req.params.userId) {
+        throw new ConflictError('Пользователь с таким email уже зарегистрирован');
+      }
+      return User.findByIdAndUpdate(
+        req.user._id,
+        { email, name },
+        {
+          new: true,
+          runValidators: true,
+        },
+      );
+    })
     .then((user) => {
       res.status(200).send(user);
     })
-    .catch((err) => {
-      next(err);
-    });
+    .catch(next);
 };
 
 module.exports = {
