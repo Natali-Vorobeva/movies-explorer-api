@@ -19,7 +19,7 @@ const limiter = rateLimit({
   max: 100,
 });
 
-mongoose.connect('mongodb://0.0.0.0:27017/diplomdb');
+mongoose.connect('mongodb://0.0.0.0:27017/bitfilmsdb');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
