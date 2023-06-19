@@ -12,9 +12,15 @@ const getMovies = (req, res, next) => {
     .catch(next);
 };
 
-async function createMovies(req, res, next) {
-  try {
-    const {
+const createMovies = (req, res, next) => {
+  const owner = req.user._id;
+  const {
+    country, director, duration, year, description, image,
+    trailerLink, thumbnail, movieId, nameRU, nameEN,
+  } = req.body;
+
+  Movie.create(
+    {
       country,
       director,
       duration,
@@ -23,30 +29,17 @@ async function createMovies(req, res, next) {
       image,
       trailerLink,
       thumbnail,
+      owner,
       movieId,
       nameRU,
       nameEN,
-    } = req.body;
-    const ownerId = req.user._id;
-    const movie = await Movie.create({
-      country,
-      director,
-      duration,
-      year,
-      description,
-      image,
-      trailerLink,
-      thumbnail,
-      owner: ownerId,
-      movieId,
-      nameRU,
-      nameEN,
+    },
+  )
+    .then((movie) => res.status(201).send(movie))
+    .catch((err) => {
+      next(err);
     });
-    res.status(201).send(movie);
-  } catch (err) {
-    next(err);
-  }
-}
+};
 
 const deleteMovie = (req, res, next) => {
   const { movieId } = req.params;
