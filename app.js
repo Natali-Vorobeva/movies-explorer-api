@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
 const helmet = require('helmet');
@@ -10,8 +11,6 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 const BAD_REQUEST_ERROR_CODE = 400;
 
 const { PORT = 3000 } = process.env;
-
-const corsConfig = require('./utils/corsConfig');
 
 const app = express();
 
@@ -27,17 +26,11 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(limiter);
 
-app.use(corsConfig);
+app.use(cors());
 
 app.use(requestLogger);
 app.use(helmet());
 app.use(errorLogger);
-
-// app.get('/crash-test', () => {
-//   setTimeout(() => {
-//     throw new Error('Сервер сейчас упадёт');
-//   }, 0);
-// });
 
 app.use(routes);
 
