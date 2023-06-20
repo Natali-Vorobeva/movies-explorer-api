@@ -1,7 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
-const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const routes = require('./routes');
@@ -12,7 +11,7 @@ const BAD_REQUEST_ERROR_CODE = 400;
 
 const { PORT = 3000 } = process.env;
 
-const allowedCors = require('./utils/allowedCors');
+const corsConfig = require('./utils/corsConfig');
 
 const app = express();
 
@@ -28,9 +27,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(limiter);
 
-app.use(cors({
-  origin: allowedCors,
-}));
+app.use(corsConfig);
 
 app.use(requestLogger);
 app.use(helmet());
