@@ -12,6 +12,8 @@ const BAD_REQUEST_ERROR_CODE = 400;
 
 const { PORT = 3000 } = process.env;
 
+const allowedCors = require('./utils/allowedCors');
+
 const app = express();
 
 const limiter = rateLimit({
@@ -26,8 +28,9 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(limiter);
 
-app.use(cors());
-app.options('*', cors());
+app.use(cors({
+  origin: allowedCors,
+}));
 
 app.use(requestLogger);
 app.use(helmet());
