@@ -26,7 +26,17 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(limiter);
 
-app.use(cors());
+app.use(cors({
+  credentials: true,
+  origin: [
+    'http://api.portfolio-vorobeva.nomoredomains.rocks;',
+    'https://api.portfolio-vorobeva.nomoredomains.rocks;',
+    'http://diplom-portfolio-vorobeva.nomoredomains.rocks;',
+    'https://diplom-portfolio-vorobeva.nomoredomains.rocks;',
+    'localhost:3000',
+    'http://localhost:3000',
+  ],
+}));
 
 app.use(requestLogger);
 app.use(helmet());
