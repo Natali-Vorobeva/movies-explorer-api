@@ -28,14 +28,9 @@ app.use(limiter);
 
 app.use(cors({
   credentials: true,
-  origin: [
-    'http://api.portfolio-vorobeva.nomoredomains.rocks;',
-    'https://api.portfolio-vorobeva.nomoredomains.rocks;',
-    'http://diplom-portfolio-vorobeva.nomoredomains.rocks;',
-    'https://diplom-portfolio-vorobeva.nomoredomains.rocks;',
-    'localhost:3000',
-    'http://localhost:3000',
-  ],
+  origin: '*',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  allowedHeaders: ['Content-Type', 'authorization'],
 }));
 
 app.use(requestLogger);
