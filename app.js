@@ -29,7 +29,7 @@ app.use(limiter);
 app.use(cors({
   origin: '*',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  allowedHeaders: ['Content-Type', 'authorization'],
+  allowedHeaders: ['Content-Type', 'Accept'],
 }));
 
 app.use(requestLogger);
