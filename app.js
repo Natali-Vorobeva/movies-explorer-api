@@ -26,21 +26,9 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(limiter);
 
-// Массив разешённых доменов
-const allowedCors = [
-  'https://diplom-portfolio-vorobeva.nomoredomains.rocks',
-  'http://diplom-portfolio-vorobeva.nomoredomains.rocks',
-  'https://api.portfolio-vorobeva.nomoredomains.rocks',
-  'http://api.portfolio-vorobeva.nomoredomains.rocks',
-  'localhost:3000',
-  'http://localhost:3000',
-];
 
 function AllowedCors(req, res, next) {
-  const { origin } = req.headers;
-  if (allowedCors.includes(origin)) {
-    res.header('Access-Control-Allow-Origin', origin);
-  }
+  res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE');
   next();
