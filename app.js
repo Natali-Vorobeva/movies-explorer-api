@@ -1,5 +1,5 @@
 const express = require('express');
-const cors = require('cors');
+// const cors = require('cors');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
 const helmet = require('helmet');
@@ -26,7 +26,27 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(limiter);
 
-app.use(cors());
+// Массив разешённых доменов
+const allowedCors = [
+  'https://diplom-portfolio-vorobeva.nomoredomains.rocks',
+  'http://diplom-portfolio-vorobeva.nomoredomains.rocks',
+  'https://api.portfolio-vorobeva.nomoredomains.rocks',
+  'http://api.portfolio-vorobeva.nomoredomains.rocks',
+  'localhost:3000',
+  'http://localhost:3000',
+];
+
+function AllowedCors(req, res, next) {
+  const { origin } = req.headers;
+  if (allowedCors.includes(origin)) {
+    res.header('Access-Control-Allow-Origin', origin);
+  }
+  next();
+}
+
+app.use(AllowedCors);
+
+// app.use(cors());
 //   {
 //   origin: '*',
 //   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
