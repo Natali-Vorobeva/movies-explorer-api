@@ -26,11 +26,12 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(limiter);
 
-app.use(cors({
-  origin: '*',
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  allowedHeaders: ['Content-Type', 'Authorization', 'Referer', 'Accept'],
-}));
+app.use(cors());
+//   {
+//   origin: '*',
+//   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+//   allowedHeaders: ['Content-Type', 'Authorization', 'Referer', 'Accept'],
+// }
 
 app.use(requestLogger);
 app.use(helmet());
