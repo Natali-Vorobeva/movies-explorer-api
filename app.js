@@ -1,5 +1,5 @@
 const express = require('express');
-// const cors = require('cors');
+const cors = require('cors');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
 const helmet = require('helmet');
@@ -7,6 +7,7 @@ const rateLimit = require('express-rate-limit');
 const routes = require('./routes');
 
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+const { Cors } = require('./middlewares/allowedCors');
 
 const BAD_REQUEST_ERROR_CODE = 400;
 
@@ -26,21 +27,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(limiter);
 
-function AllowedCors(req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept', 'Authorization');
-  res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE');
-  next();
-}
-
-app.use(AllowedCors);
-
-// app.use(cors());
-//   {
-//   origin: '*',
-//   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-//   allowedHeaders: ['Content-Type', 'Authorization', 'Referer', 'Accept'],
-// }
+app.use(cors(Cors));
 
 app.use(requestLogger);
 app.use(helmet());

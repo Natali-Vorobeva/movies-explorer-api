@@ -3,9 +3,9 @@ const { imgUrlRegExp } = require('../utils/imgUrlRegExp');
 
 const validateUserCreate = celebrate({
   body: Joi.object().keys({
+    name: Joi.string().min(2).max(30),
     email: Joi.string().required().email(),
     password: Joi.string().required(),
-    name: Joi.string().min(2).max(30),
   }),
 });
 
@@ -18,15 +18,15 @@ const validateUserLogin = celebrate({
 
 const validateUserGet = celebrate({
   body: Joi.object().keys({
-    email: Joi.string().required().email(),
     name: Joi.string().required(),
+    email: Joi.string().required().email(),
   }),
 });
 
 const validateUserUpdate = celebrate({
   body: Joi.object().keys({
-    email: Joi.string().required().email(),
     name: Joi.string().required(),
+    email: Joi.string().required().email(),
   }),
 });
 

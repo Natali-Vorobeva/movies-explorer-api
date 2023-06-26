@@ -7,6 +7,12 @@ require('mongoose-type-url');
 const UnauthorizedError = require('../utils/errors/unauthorized');
 
 const userSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    minlength: 2,
+    maxlength: 30,
+    required: true,
+  },
   email: {
     type: String,
     required: true,
@@ -21,12 +27,7 @@ const userSchema = new mongoose.Schema({
     required: true,
     select: false,
   },
-  name: {
-    type: String,
-    minlength: 2,
-    maxlength: 30,
-    required: true,
-  },
+
 }, { versionKey: false });
 
 userSchema.statics.findUserByCredentials = function findUser(email, password) {
