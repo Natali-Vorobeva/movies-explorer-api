@@ -11,7 +11,6 @@ const NotFoundError = require('../utils/errors/not-found');
 
 const createUsers = (req, res, next) => {
   const { email, password, name } = req.body;
-  console.log(req.body);
 
   bcrypt.hash(password, 10)
     .then((hash) => {
@@ -96,7 +95,12 @@ const updateUser = (req, res, next) => {
       res.status(200).send(user);
     })
     .catch((err) => {
-      next(err);
+      // console.log(err.code);
+      if (err.code === 11000) {
+        next(new ConflictError('Пользователь с такой почтой уже зарегистрирован.'));
+      } else {
+        next(err);
+      }
     });
 };
 

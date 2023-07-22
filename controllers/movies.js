@@ -5,7 +5,6 @@ const NotFoundError = require('../utils/errors/not-found');
 
 const getMovies = (req, res, next) => {
   Movie.find({})
-    // .populate(['owner', 'likes'])
     .then((movies) => {
       res.status(200).send(movies);
     })
