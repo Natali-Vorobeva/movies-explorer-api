@@ -95,7 +95,6 @@ const updateUser = (req, res, next) => {
       res.status(200).send(user);
     })
     .catch((err) => {
-      // console.log(err.code);
       if (err.code === 11000) {
         next(new ConflictError('Пользователь с такой почтой уже зарегистрирован.'));
       } else {

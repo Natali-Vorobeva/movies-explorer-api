@@ -56,7 +56,6 @@ module.exports = {
   validateUserCreate,
   validateUserLogin,
   validateUserGet,
-  // validateUserId,
   validateUserUpdate,
   validateMoviesPost,
   validateMovieId,
